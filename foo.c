@@ -5,41 +5,13 @@
 #include <time.h>
 
 #include "tools.h"
+#include "board.h"
 
 int DEFAULT_WIDTH = 50;
 int DEFAULT_HEIGHT = 20;
-float RANGE_CHANCE = 1.0;
 float DEFAULT_PERCENTAGE_ALIVE_CHANCE = 0.5;
 
-void random_state( int* board, int width, int height, float percentageAliveChance ){
-    for( int hIndex = 0; hIndex < height; hIndex++ ){
-        for( int wIndex = 0; wIndex < width; wIndex++ ){
-            int state = 0;
-            float chance = (float)rand() * (RANGE_CHANCE / (float)(RAND_MAX));
-            if( chance < percentageAliveChance ){
-                state = 1;
-            }
-            *( board + (hIndex*height) + wIndex ) = state;
-        }
-    }
-}
-
-void printBoard( int* board, int width, int height ){
-    for( int hIndex = 0; hIndex < height; hIndex++ ){
-        for( int wIndex = 0; wIndex < width; wIndex++ ){
-            char cell;
-            switch( *(board + wIndex + (hIndex*height)) ){
-                case 1: cell = '#'; break;
-                case 0: cell = ' '; break;
-            }
-            printf("%c", cell);
-        }
-        printf("\n");
-    }
-}
-
-void getArgs(int argc, char** argv, int* width, int* height, float* percentageAliveChance)
-{
+void getArgs(int argc, char** argv, int* width, int* height, float* percentageAliveChance){
     *width = DEFAULT_WIDTH;
     *height = DEFAULT_HEIGHT;
     *percentageAliveChance = DEFAULT_PERCENTAGE_ALIVE_CHANCE;
@@ -63,9 +35,10 @@ int main( int argc, char* argv[] ){
     int width, height;
     float percentageAliveChance;
     getArgs(argc, argv, &width, &height, &percentageAliveChance);
-    
-    int* board = (int*) malloc( width*height * sizeof(int));
-    random_state( board, width, height, percentageAliveChance );
+
+    Board board = createBoard(width, height);
+    random_state( board, percentageAliveChance );
     printBoard( board, width, height );
+
     free( board );
 }
