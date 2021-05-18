@@ -1,7 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 int charToInt( char numChar );
+
+int randomFloat( float max ){
+    float number = max * ( (float)rand() / (float)(RAND_MAX) );
+    return number;
+}
 
 int strToInt( char numStr[], int numStrSize ){
     int number = 0;

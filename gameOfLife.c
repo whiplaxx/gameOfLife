@@ -31,14 +31,29 @@ void getArgs(int argc, char** argv, int* width, int* height, float* percentageAl
 }
 
 int main( int argc, char* argv[] ){
+    
     srand( time(NULL) );
+
+    Board board = NULL;
     int width, height;
     float percentageAliveChance;
+
     getArgs(argc, argv, &width, &height, &percentageAliveChance);
 
-    Board board = createBoard(width, height);
+    board = createBoard(width, height);
     random_state( board, percentageAliveChance );
-    printBoard( board, width, height );
+    
+    char c;
+    while( 1 ){
+        printBoard( board );
+        calculateNextBoardState( board );
 
-    free( board );
+        printf("\n\nPress ENTER to get next state, 'r' to reset or 'e' to exit.\n");
+        printf("(select the exit option instead of closing the execution to release the allocated memory)\n");
+        c = getchar();
+        if( c == 'r' || c == 'R' ){ random_state( board, percentageAliveChance ); }
+        else if( c == 'e' || c == 'E' ){ break; }
+    }
+
+    freeBoard( board );
 }

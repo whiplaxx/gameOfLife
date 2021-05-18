@@ -8,6 +8,8 @@ struct boardStruct {
 typedef struct boardStruct* Board;
 
 Board createBoard(int width, int height);
-void printBoard( Board board, int width, int height );
+void freeBoard( Board board );
+void printBoard( Board board );
 void random_state( Board board, float percentageAliveChance );
-int countNeighbors( Board board, int row, int col );
+void calculateNextBoardState( Board board );
+
