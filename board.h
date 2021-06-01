@@ -12,4 +12,4 @@ void freeBoard( Board board );
 void printBoard( Board board );
 void random_state( Board board, float percentageAliveChance );
 void calculateNextBoardState( Board board );
-
+void loadBoardFromArray( Board board, int* array );

@@ -35,14 +35,22 @@ int main( int argc, char* argv[] ){
     srand( time(NULL) );
 
     Board board = NULL;
-    int width, height;
+    int width;
+    int height;
     float percentageAliveChance;
-
-    getArgs(argc, argv, &width, &height, &percentageAliveChance);
-
-    board = createBoard(width, height);
-    random_state( board, percentageAliveChance );
     
+    getArgs(argc, argv, &width, &height, &percentageAliveChance);
+    
+    char* tempCharArray = getArrayFromFile("toad.txt", &width, &height);
+    board = createBoard(width, height);
+
+    int* tempIntArray = charArrayToInt( tempCharArray, width*height );
+    loadBoardFromArray( board, tempIntArray );
+
+    free( tempCharArray );
+    free( tempIntArray );
+    //random_state( board, percentageAliveChance );
+
     char c;
     while( 1 ){
         printBoard( board );
@@ -50,6 +58,8 @@ int main( int argc, char* argv[] ){
 
         printf("\n\nPress ENTER to get next state, 'r' to reset or 'e' to exit.\n");
         printf("(select the exit option instead of closing the execution to release the allocated memory)\n");
+
+        //sleep(1);
         c = getchar();
         if( c == 'r' || c == 'R' ){ random_state( board, percentageAliveChance ); }
         else if( c == 'e' || c == 'E' ){ break; }

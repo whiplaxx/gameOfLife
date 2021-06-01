@@ -55,3 +55,43 @@ int charToInt( char numChar ){
         default: return -1;
     }
 }
+
+int* charArrayToInt( char* charArray, int arraySize ){
+    int* intArray = (int*) malloc( sizeof(int) * arraySize);
+    for(int index = 0; index < arraySize; index++){
+        *(intArray + index) = charToInt( *(charArray + index) );
+    }
+    return intArray;
+}
+
+char* getArrayFromFile( char* filename, int* width, int* height ){
+    *width = 0;
+    *height = 0;
+
+    int sizeAlloc = 20;
+    char* fileContent = (char*) malloc( sizeof(char) * sizeAlloc );
+    FILE* fp = fopen(filename, "r");
+    
+    char readChar = fgetc( fp );
+    int index = 0;
+    while( !feof( fp ) ){
+        if( readChar != '\n' ){
+            if(index % sizeAlloc == 0 && index > 0)
+                fileContent = realloc(fileContent, sizeAlloc + (sizeAlloc * (index/sizeAlloc)) );
+            
+            *(fileContent + index) = readChar;
+            index++;
+        }else{ // if is a break of line
+            if(*height == 0){ // if is the first line
+                *width = index; // use the index to get the width
+                *height += 1;
+            }
+        }
+        readChar = fgetc( fp );
+    }
+    *height = index / (*width);
+
+    // reallocate the decrease the extra memory allocated
+    fileContent = realloc( fileContent, index);
+    return fileContent;
+}
